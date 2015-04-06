@@ -1,7 +1,7 @@
 package org.andriesfc.h2.spring.embeddedsample;
 
 
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.andriesfc.h2.spring.ExposeEmbeddedH2Server;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Bean;
 import java.util.concurrent.CountDownLatch;
 
 @SpringBootApplication
-@EnableAutoConfiguration
+@ExposeEmbeddedH2Server
 public class SampleApp {
 
     @Bean(destroyMethod = "countDown")
