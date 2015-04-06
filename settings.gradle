@@ -1,0 +1,8 @@
+buildscript {
+	ext.moduleOrg = 'org.andriesfc.h2-spring-embeddable'
+	ext.javacVersion = '1.8'
+}
+
+include 'lib'
+include 'sample-app'
+

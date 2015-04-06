@@ -1,0 +1,32 @@
+
+buildscript {
+	
+	repositories {
+		jcenter()
+	}
+	
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}" 
+        classpath "io.spring.gradle:dependency-management-plugin:0.4.1.RELEASE"
+    }
+}
+
+
+configurations {
+	all*.exclude group: 'ch.qos.logback', module: 'logback-classic'
+	all*.exclude group: 'ch.qos.logback', module: 'logback-core'
+}	
+
+apply plugin: 'spring-boot'
+apply plugin: 'io.spring.dependency-management'
+
+
+// Application Startup Configuration (used by spring boot)
+mainClassName = 'org.andriesfc.h2.spring.embeddedsample.SampleApp'
+
+dependencies {
+	compile project(':lib')
+	compile 'org.springframework.boot:spring-boot-starter'
+	compile 'org.springframework.boot:spring-boot-starter-jdbc'
+    testCompile 'org.springframework.boot:spring-boot-starter-test' 	
+}
