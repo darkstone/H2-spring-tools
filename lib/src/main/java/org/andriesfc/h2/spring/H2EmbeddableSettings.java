@@ -1,7 +1,10 @@
 package org.andriesfc.h2.spring;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+
+import javax.sql.DataSource;
 
 @ConfigurationProperties(prefix = "h2.embedded")
 public class H2EmbeddableSettings {
@@ -41,6 +44,7 @@ public class H2EmbeddableSettings {
         }
     }
 
+    boolean embeddedDataSourceMustExists;
     boolean databaseMustExists = true;
     boolean autoConfigureDataSource = true;
 
@@ -70,5 +74,13 @@ public class H2EmbeddableSettings {
 
     public void setAutoConfigureDataSource(boolean autoConfigureDataSource) {
         this.autoConfigureDataSource = autoConfigureDataSource;
+    }
+
+    public boolean isEmbeddedDataSourceMustExists() {
+        return embeddedDataSourceMustExists;
+    }
+
+    public void setEmbeddedDataSourceMustExists(boolean embeddedDataSourceMustExists) {
+        this.embeddedDataSourceMustExists = embeddedDataSourceMustExists;
     }
 }
