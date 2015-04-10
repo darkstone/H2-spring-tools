@@ -4,98 +4,46 @@ import org.h2.tools.Server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import javax.annotation.PostConstruct;
-import javax.sql.DataSource;
-import java.sql.Connection;
 import java.sql.SQLException;
 
 @Configuration
-@EnableConfigurationProperties(H2EmbeddableSettings.class)
+@EnableConfigurationProperties({CoreSettings.class, JdbcServerSettings.class, WebConsoleSettings.class})
 @ConditionalOnClass(org.h2.Driver.class)
 public class H2EmbeddableBootstrap  {
 
     private Logger logger = LoggerFactory.getLogger(H2EmbeddableBootstrap.class);
 
     @Autowired
-    protected H2EmbeddableSettings configuration;
-
-    @Autowired(required = false)
-    protected DataSource dataSource;
+    protected CoreSettings coreSettings;
 
     @Autowired
-    protected ConfigurableBeanFactory configurableBeanFactory;
+    protected JdbcServerSettings jdbcSocketServerSettings;
 
-    private Server embeddedH2Server;
-    private boolean enabled;
+    @Autowired
+    protected WebConsoleSettings webConsoleSettings;
 
-    void checkConfiguration() throws SQLException {
-
-        enabled = false;
-
-        if (!(configuration.jdbc.enabled || configuration.web.enabled)) {
-            logger.debug("Not embedding H2 Server: Neither jdbc or web ports are enable by configuration.");
-            return;
-        }
-
-        if (dataSource == null && configuration.embeddedDataSourceMustExists) {
-            logger.debug("Not embedding H2 server: Configuration requires an existing H2 datasource.");
-            return;
-        }
-
-        if (dataSource != null) {
-            boolean isH2Connection = false;
-            try (Connection connection = dataSource.getConnection()) {
-                isH2Connection = connection.getMetaData().getURL().toLowerCase().startsWith("jdbc:h2:");
-            }
-
-            if (isH2Connection) {
-                return;
-            }
-
-            if (!configuration.autoConfigureDataSource) {
-                logger.debug("Not embedding H2 Server: Configuration requires default data source to be an H2 database.");
-                return;
-            }
-        }
-
-        enabled = true;
-   }
-
-    @PostConstruct
-    protected void init() throws SQLException {
-
-        checkConfiguration();
-
-        if (enabled) {
-            logger.debug("H2 Embedding mode has been enabled. Proceeding to configure H2 server");
-        }
-
-        
-
+    @Bean(destroyMethod = "stop", initMethod = "start")
+    @ConditionalOnProperty(name = "h2.embedded.jdbc.enabled", havingValue = "true")
+    public Server h2EmbeddedJdbcSocketServer() throws SQLException {
+        final String[] toolArgs = ToolArgumentBuilder.toolArgs(coreSettings, jdbcSocketServerSettings);
+        final Server tcpServer = Server.createTcpServer(toolArgs);
+        logger.info("Initialized h2EmbeddedJdbcSocketServer: [port={}] [url={}]", tcpServer.getPort(), tcpServer.getURL());
+        return tcpServer;
     }
 
-    public Server embeddedH2Server() {
-        return embeddedH2Server;
+    @Bean(destroyMethod = "stop", initMethod = "start")
+    @ConditionalOnProperty(name = "h2.embedded.web.enabled", havingValue = "true")
+    public Server h2EmbeddedWebConsole() throws SQLException {
+        final String[] toolArgs = ToolArgumentBuilder.toolArgs(coreSettings, webConsoleSettings);
+        final Server webServer = Server.createWebServer(toolArgs);
+        logger.info("Initialized h2EmbeddedWebConsole: [PORT={}] [URL={}]", webServer.getPort(), webServer.getURL());
+        return webServer;
     }
 
-    public H2EmbeddableSettings getConfiguration() {
-        return configuration;
-    }
-
-    public void setConfiguration(H2EmbeddableSettings configuration) {
-        this.configuration = configuration;
-    }
-
-    public void setDataSource(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
-
-    public void setConfigurableBeanFactory(ConfigurableBeanFactory configurableBeanFactory) {
-        this.configurableBeanFactory = configurableBeanFactory;
-    }
 }

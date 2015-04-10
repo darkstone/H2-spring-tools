@@ -12,11 +12,6 @@ buildscript {
 }
 
 
-configurations {
-	all*.exclude group: 'ch.qos.logback', module: 'logback-classic'
-	all*.exclude group: 'ch.qos.logback', module: 'logback-core'
-}	
-
 apply plugin: 'spring-boot'
 apply plugin: 'io.spring.dependency-management'
 
@@ -28,5 +23,6 @@ dependencies {
 	compile project(':lib')
 	compile 'org.springframework.boot:spring-boot-starter'
 	compile 'org.springframework.boot:spring-boot-starter-jdbc'
+	compile 'org.springframework.boot:spring-boot-starter-logging'
     testCompile 'org.springframework.boot:spring-boot-starter-test' 	
 }

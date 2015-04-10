@@ -5,5 +5,4 @@ dependencies {
 	compile "org.springframework.boot:spring-boot:$springBootVersion"
 	compile "org.springframework.boot:spring-boot-autoconfigure:$springBootVersion"
 	compile "org.springframework:spring-context:$targetSpringVersion"
-	compile "org.slf4j:slf4j-api:$targetSLF4JVersion"
 }
