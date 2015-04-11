@@ -3,6 +3,6 @@ buildscript {
 	ext.javacVersion = '1.8'
 }
 
-include 'lib'
+include 'h2-spring-embeddable'
 include 'sample-app'
 

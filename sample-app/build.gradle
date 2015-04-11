@@ -20,9 +20,11 @@ apply plugin: 'io.spring.dependency-management'
 mainClassName = 'org.andriesfc.h2.spring.embeddedsample.SampleApp'
 
 dependencies {
-	compile project(':lib')
+	compile project(':h2-spring-embeddable')
 	compile 'org.springframework.boot:spring-boot-starter'
 	compile 'org.springframework.boot:spring-boot-starter-jdbc'
 	compile 'org.springframework.boot:spring-boot-starter-logging'
     testCompile 'org.springframework.boot:spring-boot-starter-test' 	
 }
+
+

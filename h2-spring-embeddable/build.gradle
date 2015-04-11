@@ -6,3 +6,5 @@ dependencies {
 	compile "org.springframework.boot:spring-boot-autoconfigure:$springBootVersion"
 	compile "org.springframework:spring-context:$targetSpringVersion"
 }
+
+
