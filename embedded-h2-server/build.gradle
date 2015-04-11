@@ -1,4 +1,6 @@
 
+apply plugin: 'maven-publish'
+
 
 dependencies {
 	compile "com.h2database:h2:$targetH2Version"
@@ -7,4 +9,14 @@ dependencies {
 	compile "org.springframework:spring-context:$targetSpringVersion"
 }
 
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			groupId projectGroup
+			version currentVersion
+			artifactId project.name
+			from components.java 
+		}
+	}                                                                          
+}
 

@@ -1,16 +1,12 @@
-
 buildscript {
-	
 	repositories {
 		jcenter()
-	}
-	
+	}	
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}" 
         classpath "io.spring.gradle:dependency-management-plugin:0.4.1.RELEASE"
     }
 }
-
 
 apply plugin: 'spring-boot'
 apply plugin: 'io.spring.dependency-management'
@@ -20,11 +16,9 @@ apply plugin: 'io.spring.dependency-management'
 mainClassName = 'org.andriesfc.h2.spring.embeddedsample.SampleApp'
 
 dependencies {
-	compile project(':h2-spring-embeddable')
+	compile project(':embedded-h2-server')
 	compile 'org.springframework.boot:spring-boot-starter'
 	compile 'org.springframework.boot:spring-boot-starter-jdbc'
 	compile 'org.springframework.boot:spring-boot-starter-logging'
     testCompile 'org.springframework.boot:spring-boot-starter-test' 	
 }
-
-
