@@ -11,3 +11,6 @@ actual library used to expose H2 to the sample spring boot application.
 
 The 2nd one is a sample app, which demonstrate how to use the library.
 
+# How to use #
+
+

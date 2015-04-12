@@ -11,27 +11,27 @@ buildscript {
 	ext.javaBuildVersion 		= '1.8'
 	ext.springBootVersion		= '1.2.3.RELEASE'
 
-
-	// ----------------------------------------------------------------------------
-	// Plugins
-
 	repositories {
 		mavenLocal()
 		jcenter()
 	}
-
-	dependencies {
-		classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:0.6'
-	}
+		
 }
 
+
+plugins {
+	id 'com.jfrog.bintray' version '1.0'
+}
+	
 ext.currentVersion = '1.0.0-SNAPSHOT'
 ext.projectGroup = 'org.andriesfc.h2-spring-tools'
 
 subprojects {	
+	
 	repositories {
 		jcenter()
 	}
+	
 
 	apply plugin: 'java'
 
@@ -71,4 +71,6 @@ subprojects {
 		archives sourcesJar, javadocJar
 	}
 
+	bintray.user = bintray_user
+	bintray.key  = bintray_key
 }
