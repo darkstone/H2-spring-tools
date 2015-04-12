@@ -60,4 +60,9 @@ h2.embedded.jdbc.enabled=true
 h2.embedded.web.enabled=true
 ```
 
+## Configuration Properties 
+
+### Web Console
+
+### Jdbc Socket
 
